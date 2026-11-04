@@ -1,60 +1,63 @@
 
 "use client";
-
+import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 import { useState } from "react";
 import type { SyntheticEvent } from "react";
 import toast from "react-hot-toast";
 
 export default function SigninPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSignin = async (
-    e: SyntheticEvent<HTMLFormElement>
-  ) => {
-    e.preventDefault();
+ const handleSignin = async (
+  e: SyntheticEvent<HTMLFormElement>
+) => {
+  e.preventDefault();
 
-    if (!email.trim() || !password) {
-      toast.error("ইমেইল ও পাসওয়ার্ড লিখুন।");
+  if (!email.trim() || !password) {
+    toast.error("ইমেইল ও পাসওয়ার্ড লিখুন।");
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    const { error } = await authClient.signIn.email({
+      email: email.trim(),
+      password,
+    });
+
+    if (error) {
+      toast.error(error.message || "ইমেইল বা পাসওয়ার্ড সঠিক নয়।");
       return;
     }
 
-    setLoading(true);
+    toast.success("সফলভাবে সাইন ইন হয়েছে!");
+    router.push("/");
+    router.refresh();
+  } catch {
+    toast.error("সাইন ইন করা যায়নি। আবার চেষ্টা করুন।");
+  } finally {
+    setLoading(false);
+  }
+};
 
-    try {
-      // TODO: Connect your BetterAuth email sign-in method here.
-      // Example:
-      // const result = await authClient.signIn.email({
-      //   email,
-      //   password,
-      // });
-      //
-      // On success:
-      // toast.success("সফলভাবে সাইন ইন হয়েছে!");
-      // router.push("/");
-
-      toast.error("BetterAuth এখনো সংযুক্ত করা হয়নি।");
-    } catch {
-      toast.error("সাইন ইন করা যায়নি। তথ্য যাচাই করে আবার চেষ্টা করুন।");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSocialSignin = (provider: "google" | "github") => {
-    // TODO: Connect BetterAuth social authentication.
-    // Example:
-    // await authClient.signIn.social({
-    //   provider,
-    //   callbackURL: "/",
-    // });
-
-    toast.error(
-      `${provider === "google" ? "Google" : "GitHub"} লগইন চালু করতে BetterAuth সংযুক্ত করুন।`
-    );
-  };
+ const handleSocialSignin = async (
+  provider: "google" | "github"
+) => {
+  try {
+    await authClient.signIn.social({
+      provider,
+      callbackURL: "/",
+    });
+  } catch {
+    toast.error("লগইন ব্যর্থ হয়েছে।");
+  }
+};
 
   return (
     <main className="flex min-h-screen items-start justify-center bg-[#f0f5f0] px-4 py-8 text-[#26332b] sm:py-7">
