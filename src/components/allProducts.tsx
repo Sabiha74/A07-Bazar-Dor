@@ -71,7 +71,8 @@ export default function AllProducts() {
           {products.map((product) => (
             <Link
               key={product.id}
-              href={`/product/${product.slug}`}
+               href={`/product/${product.slug}?category=${product.category}`}
+  className="block"
               className="block"
             >
               <ProductCard product={product} />
