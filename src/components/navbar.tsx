@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Category } from "@/types/type";
 import {
   Menu,
   X,
@@ -15,14 +16,8 @@ import {
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 
-type Category = {
-  id: string;
-  slug: string;
-  nameBn: string;
-  icon: string;
-};
 
-export default function Navbar() {
+export default function Navbar({ bengaliDate }: { bengaliDate: string }) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -40,7 +35,7 @@ export default function Navbar() {
     async function loadCategories() {
       try {
         const response = await fetch(
-          "https://openapi.programming-hero.com/api/bazardor/categories"
+          `${process.env.NEXT_PUBLIC_API_URL}/categories`
         );
 
         if (!response.ok) {
@@ -99,6 +94,7 @@ export default function Navbar() {
 
   const user = session?.user;
 
+
   function categoryHref(slug: string) {
     return `/category/${slug}`;
   }
@@ -130,14 +126,15 @@ export default function Navbar() {
             />
 
             <div>
-              <h1 className="text-lg font-extrabold tracking-tight text-emerald-950 sm:text-xl">
-                বাজার দর
-              </h1>
+  <h1 className="text-lg font-extrabold tracking-tight text-emerald-950 sm:text-xl">
+    বাজার দর
+  </h1>
 
-              <p className="text-[10px] font-medium text-gray-500 sm:text-xs">
-                সঠিক দামে, সঠিক বাজার
-              </p>
+  <p className="mt-0.5 text-[10px] font-medium text-gray-500 sm:text-xs">
+    {bengaliDate}
+  </p>
             </div>
+            
           </Link>
 
           {/* Desktop Authentication */}
