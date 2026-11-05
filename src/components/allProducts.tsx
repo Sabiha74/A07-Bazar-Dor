@@ -73,7 +73,7 @@ export default function AllProducts() {
               key={product.id}
                href={`/product/${product.slug}?category=${product.category}`}
   className="block"
-              className="block"
+              
             >
               <ProductCard product={product} />
             </Link>
