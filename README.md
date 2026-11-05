@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="YOUR_LIVE_LINK_HERE" target="_blank">
+  <a href="https://a07-bazar-dor-nu.vercel.app" target="_blank">
     <strong>🌐 Live Demo</strong>
   </a>
   |
