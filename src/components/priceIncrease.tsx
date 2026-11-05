@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import { Product } from "@/types/type";
 import ProductCard from "./productCard";
+import Link from "next/link";
 
 export default function PriceIncrease() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -62,10 +63,16 @@ export default function PriceIncrease() {
       ) : (
         /* Product Cards */
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+  {products.map((product) => (
+    <Link
+      key={product.id}
+      href={`/product/${product.slug}?category=${product.category}`}
+      className="block"
+    >
+      <ProductCard product={product} />
+    </Link>
+  ))}
+</div>
       )}
 
       {!loading && products.length === 0 && (
