@@ -117,7 +117,7 @@ export default function Navbar({ bengaliDate }: { bengaliDate: string }) {
             aria-label="বাজার দর হোম"
           >
             <Image
-              src="/images/logo-icon.png"
+              src="/Images/logo-icon.png"
               alt="বাজার দর লোগো"
               width={48}
               height={48}
